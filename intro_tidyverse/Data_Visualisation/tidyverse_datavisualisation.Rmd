@@ -1,0 +1,81 @@
+---
+title: "tidyverse_datvisualisation"
+author: "Manojit Sarkar"
+date: "17 July 2018"
+output: html_document
+---
+
+#Lets start!
+
+## Data Visualisation
+
+we start of with loading the ggplot 2 library / or the tidyverse library
+
+Here i will be just loading the ggplot2 library 
+note :- if the libraries arre missing you can download it by typing the following 
+
+install.packages("packagename")
+
+
+```{r}
+library(ggplot2)
+```
+
+we will be using the same dataset as before the gapminder data set
+
+if not installed : install it with the following line of code
+
+```{r}
+#install.packages("gapminder")
+```
+
+lets load the package
+
+```{r}
+library(gapminder)
+```
+
+
+Then install the dplyr package
+
+
+
+```{r}
+library(dplyr)
+```
+We will be working with the data pertaining to the year 2007 of gapminder and store it in a new data set gapminder_2007
+
+For this we will be using the dplyr package :: filter verb
+
+```{r}
+gapminder_2007<-gapminder%>%
+  filter(year==2007)
+```
+
+let us inspect the new dataset
+```{r}
+gapminder_2007
+```
+
+Cool!! We are now ready with our data set to carry out visualisation.
+
+
+Lets do our fist visualisation usiing the ggplot2::ggplot
+
+```{r}
+ggplot(gapminder_2007,aes(x=gdpPercap,y=lifeExp))+geom_point()
+```
+
+Wow!!! isn't that a wonderful scatter plot.
+
+We just plotted a scatter plot between gdpPercap in x axis and lifeExp in the Y  axis.
+
+
+
+
+
+
+
+
+
+
