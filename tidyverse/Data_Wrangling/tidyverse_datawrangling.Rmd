@@ -1,0 +1,158 @@
+---
+title: "Tidyverse_data Camp"
+author: "Manojit Sarkar"
+date: "16 July 2018"
+output: html_document
+---
+
+```{r}
+#install.packages("gapminder"")
+```
+```{r}
+library(gapminder)
+
+```
+
+Use str() on gapminder to know about class details and observation size of gapminder.
+
+```{r}
+str(gapminder)
+```
+ it shows there are 1704 rows with 6 coloumns
+ with vabriables 
+ 
+ country <- a factor data type with 155 levels<-categorical variable
+ continent <- a factor with 5 levels<-categorical Variable
+ year <- int (discrete variable)
+ lifeExp<-numeric<-continous variable
+ pop<- int (discrete)
+ gdpPerCap<-num <-continous variable
+ 
+```{r}
+gapminder
+```
+ Just to see in the first 10 data
+ 
+ 
+```{r}
+#install.packages("dplyr")
+```
+```{r}
+library(dplyr)
+```
+ 
+this is the tool for transforming the data such as filter,sorting and summarizing it.
+
+## dplyr Verbs
+
+Everytime we use a verb on a data set we have to use a pipe "%>%"
+It says take whatever is before it and feed it to the next step
+
+<B>1>filter() </B>
+
+```{r}
+gapminder%>%
+  filter(year==2007)
+```
+
+Lets now find out the 2007 records for India
+
+```{r}
+gapminder%>%
+  filter(year==2007,country=="India")
+```
+
+WoW ! It's so easy.
+
+<B>2>arrange()</B>
+
+Its shorts a table based on a variable
+
+```{r}
+gapminder%>%
+  arrange(gdpPercap)
+```
+
+It arranges the data set in ascending order of gdpPercap. the data shows Democrartic Republic of congo had the lowesest gdp in the year 2002.
+
+```{r}
+gapminder%>%
+  arrange(desc(gdpPercap))
+```
+
+with the "desc" function we change the default of arrange verb to descending order.
+
+But looking at all countries for all the years might not be useful so lets look at countries arranged in order of gdpPercap for the year 2007
+
+```{r}
+gapminder%>%
+  filter(year==2007)%>%
+  arrange(gdpPercap)
+```
+
+Cool isn't it.
+
+The order of verbs is not important as long as it doesn't break the logic.
+
+what about another example : arrange in descending order of population for the year 1957
+
+```{r}
+gapminder%>%
+  arrange(desc(pop))%>%
+  filter(year==1957)
+```
+
+<B>3>mutate()</B>
+
+It changes the variables in your dataset ,based on other ones or add a new variable also based on the existing variables.
+
+First we will change an existing variable population. we will make population divide by a million.
+
+
+```{r}
+gapminder%>%
+  mutate(pop=pop/1000000)
+```
+
+As we can see, the pop values are now in millions.
+
+
+Now lets add a new variable to the dataset
+
+Lets says we make a gdp variable which is gdppercapita multiplied by population
+
+```{r}
+gapminder%>%
+  mutate(gdp=gdpPercap*pop)
+```
+
+
+Jinx! A new cloumn with gdp data. 
+
+Now a big task!! Lets put together all the verbs we learned and find out the gdp of countries in the year 2007 in the descending order of gdp
+
+
+```{r}
+gapminder%>%
+  mutate(gdp=gdpPercap*pop)%>%
+  filter(year==2007)%>%
+  arrange(desc(gdp))
+```
+
+Great!!
+
+One more example
+
+lets have a new variable lifeExpMonths which is nothing but life expectancy in months for the year 2007 and arrange it in descendending order of the new variable 
+
+```{r}
+gapminder%>%
+  filter(year==2007)%>%
+    mutate(lifeExpMonths=lifeExp*12)%>%
+      arrange(desc(lifeExpMonths))
+```
+
+Magic!!!
+
+
+
