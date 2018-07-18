@@ -1,3 +1,0 @@
-"0","gapminder%>%"
-"0","  arrange(desc(pop))%>%"
-"0","  filter(year==1957)"

@@ -1,4 +1,0 @@
-"0","gapminder%>%"
-"0","  filter(year==2007)%>%"
-"0","    mutate(lifeExpMonths=lifeExp*12)%>%"
-"0","      arrange(desc(lifeExpMonths))"

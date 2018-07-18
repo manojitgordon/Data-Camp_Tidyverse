@@ -1,4 +1,0 @@
-"0","gapminder%>%"
-"0","  mutate(gdp=gdpPercap*pop)%>%"
-"0","  filter(year==2007)%>%"
-"0","  arrange(desc(gdp))"
