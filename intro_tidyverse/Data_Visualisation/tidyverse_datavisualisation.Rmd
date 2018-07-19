@@ -70,12 +70,64 @@ Wow!!! isn't that a wonderful scatter plot.
 
 We just plotted a scatter plot between gdpPercap in x axis and lifeExp in the Y  axis.
 
+# Log Scales
+
+
+one of the problem with the plot is that lot of countries gets crammed in the lesft most part of the x -axis. this is because the gdp per capita spans over several order of magnitude, with some contries in tens of thousands of dollars and others in hundreds. When ne of your axes has such kind of distribution it is useful to work with a logrithmatic scale that is a scale where each fixed distances is multiplication of the value. So lets use the log scale on x axis.
+
+
+```{r}
+ggplot(gapminder_2007,aes(x=gdpPercap,y=lifeExp))+geom_point()+scale_x_log10()
+```
 
 
 
+this is the same data as abve but now each unit on the x-axis represents a change of 10 times the GDP. you can see that the x axis goes from 1000 to 10000 and the next will go 100000.
+On this scale the relationship looks more linear and one can more easily distinguish the countries on the lower end of the spectrum.
+
+We can add log scales on both x nd y axes.
 
 
+##Additional Aesthetics (aes)
+
+size and color.
+
+Continent is a categorical variable with five levels. A good way to represent a categorical variable in a scatter plot is by color of the points.
+lets try it for overselves.
+
+```{r}
+ggplot(gapminder_2007,aes(x=gdpPercap,y=lifeExp,color=continent))+geom_point()+scale_x_log10()
+```
+
+Now size aesthetics
+
+population "pop" is a numeric variable and a good way to represent a numeric variable is size aesthetics. So lets do it.
+
+```{r}
+ggplot(gapminder_2007,aes(x=gdpPercap,y=lifeExp,color=continent,size=pop))+geom_point()+scale_x_log10()
+```
+
+## Faceting
+
+ggplot2 allows us to divide our plots into sub plots to get one small graph. This is called faceting.
+
+Mostly its used on categorical varibles and we will use it with the variable continent.
+
+lets try it out
+
+```{r}
+ggplot(gapminder_2007,aes(x=gdpPercap,y=lifeExp))+geom_point()+scale_x_log10()+facet_wrap(~continent)
+```
+
+lets do more faceting examples :-
 
 
+--Scatter plot comparing gdpPercap and lifeExp , with color representing continent and size representing population, faceted by year
 
+for comparing with year we will have to use the gapminder dataset 
 
+```{r}
+ggplot(gapminder,aes(x=gdpPercap,y=lifeExp,color=continent,size=pop))+geom_point()+scale_x_log10()+facet_wrap(~year)
+```
+
+Thats all for intro into Tidyverse_Visualisation !!! May the force be with you!!!
