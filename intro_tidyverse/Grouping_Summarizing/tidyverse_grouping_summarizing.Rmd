@@ -1,0 +1,140 @@
+---
+title: "tidyverse_grouping&summarizing"
+author: "Manojit Sarkar"
+date: "19 July 2018"
+output: html_document
+---
+
+In this chapter we will dive back into more of "dplyr" verbs as we dis in the Data Wrangling
+
+## 1)summarise() verb which turns many observations into one 
+
+Before that as usal lets install and load the libaries
+
+```{r}
+library(tidyverse)
+```
+```{r}
+library(gapminder)
+```
+
+So , lets start with  the average life expectancy 
+
+```{r}
+gapminder%>%
+  summarize(meanLifeExp=mean(lifeExp))
+
+```
+
+the summarize() collapses the entire table into one row.
+
+It doesnt make a sense to do the average life expectancy for all the years and across all countries .. so lets take the year 2007 and find out the average life expectancy over all the countries.
+
+```{r}
+gapminder%>%
+  filter(year==2007)%>%
+  summarise(lifeMeanExp=mean(lifeExp))
+```
+
+We can use multiple summarize at time. lets find out the total population for 2007 along with the average life expectancy.
+
+
+```{r}
+gapminder%>%
+  filter(year==2007)%>%
+  summarise(lifeMeanExp=mean(lifeExp),totalPop=sum(as.numeric(pop)))
+```
+
+note :- as.numeric converts the integer valuse into numeric. 
+
+let dive into more summarize built in functions..
+
+1)lets use median() function for the year 1957 on the lifeExp
+
+```{r}
+gapminder%>%
+  filter(year==1957)%>%
+  summarise(medianLifeExp=median(lifeExp))
+```
+
+
+
+2)Filter for 1957 then summarize the median life expectancy and the maximum GDP per capita
+
+
+
+```{r}
+gapminder%>%
+  filter(year==1957)%>%
+  summarise(medianLifeExp=median(lifeExp),maxGDPperCap=max(gdpPercap))
+```
+
+## 2) group_by() verb group_by before summarise() turns groups into one row.
+
+lets see an example
+
+```{r}
+gapminder%>%
+  group_by(year)%>%
+  summarise(meanLifeExp=mean(lifeExp),totalpop=sum(as.numeric(pop)))
+```
+
+So the data tells us the average life expentancy started with 49.06 years in 1957 and went up to 67.01 in 2007 and also the population started with 2.4 billion in 1952  and went up to 6.2 billion in 2007 
+
+now lets check the average life expectancy and pop within each continent in the year 2007--
+
+```{r}
+gapminder%>%
+  filter(year==2007)%>%
+  group_by(continent)%>%
+  summarise(meanLifeExp=mean(lifeExp),totalPop=sum(as.numeric(pop)))
+```
+
+The average life expecantancy is high for oceania followed by Europe with total pop highest for Asia followed by Africa.
+
+now lets see how these values change over time :-
+
+```{r}
+gapminder%>%
+  group_by(year,continent)%>%
+  summarise(meanLifeExp=mean(lifeExp),totalPop=sum(as.numeric(pop)))
+```
+
+cool!!
+
+Lets now visualize the above 2 datas using a scatterplot
+
+```{r}
+by_year<-gapminder%>%
+  group_by(year)%>%
+  summarise(meanLifeExp=mean(lifeExp),totalpop=sum(as.numeric(pop)))
+
+#visualisation part
+
+ggplot(by_year,aes(x=year,y=totalpop))+geom_point()
+
+```
+Notice that the Y axis doesnt start with zero its time for us to introduce a new graphing option "expands_limits(y=0)"
+
+```{r}
+by_year<-gapminder%>%
+  group_by(year)%>%
+  summarise(meanLifeExp=mean(lifeExp),totalpop=sum(as.numeric(pop)))
+
+#visualisation part
+
+ggplot(by_year,aes(x=year,y=totalpop))+geom_point()+expand_limits(y=0)
+
+```
+```{r}
+by_year_continent<-gapminder%>%
+  group_by(year,continent)%>%
+  summarise(meanLifeExp=mean(lifeExp),totalPop=sum(as.numeric(pop)))
+#visualization part
+
+ggplot(by_year_continent,aes(y=totalPop,x=year,color=continent))+geom_point()+expand_limits(y=0)
+
+```
+
+
+This is it for Grouping and Summarizing !!! May the force be with You !! We are one with the force and the force is one with us !!!
