@@ -1,0 +1,129 @@
+---
+title: "tidyverse_types of visualisation"
+author: "Manojit Sarkar"
+date: "20 July 2018"
+output: html_document
+---
+
+
+
+## Types of Visualisation
+
+lets start with loading the required libraries
+
+```{r}
+library(tidyverse)
+library(gapminder)
+```
+
+
+
+#1. Line Plots (good for showing change over time)
+
+lets dig in 
+
+```{r}
+by_continent_year<-gapminder%>%
+  group_by(continent,year)%>%
+  summarize(meanLifeExp=mean(lifeExp))
+
+```
+
+```{r}
+ggplot(by_continent_year,aes(x=year,y=meanLifeExp,color=continent))+geom_line()+expand_limits(y=0)
+```
+
+one more examples:
+
+Create a line plot showing the change in medianGdpPercap by continent over time
+
+first we need to summarize the dataset for the meadian value
+
+```{r}
+by_year_continent<-gapminder%>%
+                    group_by(year,continent)%>%
+                    summarize(medianGdpPercap=median(gdpPercap))
+```
+
+then the plotting part 
+
+```{r}
+ggplot(by_year_continent,aes(x=year,y=medianGdpPercap,color=continent))+geom_line()+expand_limits(y=0)
+```
+
+
+
+#2.Bar Plots (good for showing statistics for each of several categories)
+
+
+```{r}
+by_continent_2007<-gapminder%>%
+                    filter(year==2007)%>%
+                    group_by(continent)%>%
+                    summarize(meanLifeExp=mean(lifeExp))
+
+## lets plot the bar plot
+
+ggplot(by_continent_2007,aes(x=continent,y=meanLifeExp))+geom_col()
+
+```
+
+Cool !!
+
+#3.Histograms (describe the distribution of one-dimensional numeric variable)
+
+With Histograms we investigate one dimension of the data at a time 
+
+
+```{r}
+by_year_2007<-gapminder%>%
+                filter(year==2007)
+
+ggplot(by_year_2007,aes(x=lifeExp))+geom_histogram(bins=30)
+```
+
+
+Its a distribution of life expectancy across countries in the year 2007. Where each bar represents a bucket/bin of life expactancy and the height represents how many countries fall into that bucket/bin.
+
+most countries have a life expectancy of 70 -80 years also there is a set of countries whose life expectancy falls between 40 -65 years.
+
+
+#4.Boxplot (which compares the distribution of a numeric variable among several categories)
+
+
+```{r}
+year_2007<-gapminder%>%
+            filter(year==2007)
+
+ggplot(year_2007, aes(x = continent, y = lifeExp)) +
+  geom_boxplot()
+```
+
+it shows the life expectancy of each continent in the year 2007, so that we can compare them.
+
+the black line in the middle of each box is the median 
+the top and the bottom part are the 75th and 25th percentile respectively, meaning half of the distribution lies within the box. 
+the line going up and down the box are called whiskers , cover other half of the countries. 
+the two dots otside the lines for asia and americas are the outliers (countries with low life expectancy than their respective distribution). 
+We can also see that the median life expectancy of europe is one the highestand the two countries of Oceania Australia and NewZeland both have very high values.
+the life expectancy of africa is unusually low because half of the countries in africa have a life expectancy between 50 and 60.
+
+
+
+```{r}
+gapminder_1952 <- gapminder %>%
+  filter(year == 1952)
+
+# Create a boxplot comparing gdpPercap among continents
+ ggplot(gapminder_1952,aes(x=continent,y=gdpPercap))+geom_boxplot()+scale_y_log10()+ggtitle(("Comparing gdpPercap among continents"))
+```
+
+here the median gdpper capita for europe is one of the highest and the two countries of ocenia has the highest values of gdp per capita.
+
+One of the country of Asia (Muscat)has the highest gdp per capita. 
+
+Again Africa  has the lowest GDP per capita income.
+
+Also we added a title to the plot :)
+
+Thats all for now folks and May the force be with you!!!! 
