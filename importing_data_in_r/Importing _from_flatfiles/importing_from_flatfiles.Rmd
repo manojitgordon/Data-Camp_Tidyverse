@@ -1,0 +1,124 @@
+---
+title: "importing from flat files--Utils"
+author: "Manojit Sarkar"
+date: "21 July 2018"
+output: html_document
+---
+##INTRO
+
+Lots of data comes in the form of flat files: simple tabular text files. Learn how to import all common formats of flat file data with base R functions.
+
+A flat file database stores data in plain text format. Example csv -where csv stands for comma seperated values
+
+## 1.CSV Files
+state,capital,pop_mill,area_sqm
+South Dakota,Pierre,0.853,77116
+NewYork,Albany,19,746,54555
+Oregon,Salem,3.970,98381
+
+above is the example of a flat file in csv format.
+
+
+But how to load this file into R -- we can do this using R base utils function read.csv()
+
+lets load a csv file (you can download the csv file from my datasets folder)
+
+```{r}
+hr<-read.csv("C:/Users/gordon/Desktop/Data Camp/datasets/HR Analytics.csv")
+hr
+
+```
+
+in the path put your path for the csv file.
+
+```{r}
+str(hr)
+```
+
+
+
+
+Now here we can observe that all our string being converted into factor, if we dont want our strings to converted into factor we use the folloing code.
+
+
+```{r}
+hr1<-read.csv("C:/Users/gordon/Desktop/Data Camp/datasets/HR Analytics.csv",stringsAsFactors = FALSE)
+hr1
+```
+By default stringsAsFacor is set to TRUE.
+
+```{r}
+str(hr1)
+```
+
+As we can see the strings are not converted to factor here.
+
+##2 Tab-delimited file
+
+Are files seperated by "tabs"
+
+state   capital   pop_mill    area_sqm
+South Dakota    Pierre    0.853   77116
+New York    Albany    19.746    54555
+Oregon    Salem   3.970   98381
+
+
+
+```{r}
+hotdog<-read.delim("C:/Users/gordon/Desktop/Data Camp/datasets/hot_dog.txt")
+hotdog
+```
+
+Lets summarize the table
+
+```{r}
+summary(hotdog)
+```
+
+Great!!
+
+## Exoctic Seperators 
+
+data seperated by /, \ , # , * ,""etc etc
+
+example:
+
+state/capital/pop_mill/area_sqm
+South Dakota/Pierre/0.853/77116
+New York/Albany/19.746/54555
+Oregon/Salem/3.970/ 98381
+
+lets read the same hot_dog,text file with read.table
+
+```{r}
+hotdog1<-read.table("C:/Users/gordon/Desktop/Data Camp/datasets/hot_dog.txt",sep="",header=T)
+hotdog1
+```
+
+Note: header in read.table is FALSE by Default.
+
+
+now suppose there is a file without header let see how to add a header then.
+
+```{r}
+hotdog2<-read.table("C:/Users/gordon/Desktop/Data Camp/datasets/hd_nh.txt",sep="",header=F,col.names = c("type","calories","sodium"))
+hotdog2
+```
+
+
+Select the hot dog with the least calories:
+
+```{r}
+leastcalories<-hotdog2[which.min(hotdog2$calories),]
+leastcalories
+```
+
+
+Select the hot dog with the maximum sodium:
+
+```{r}
+maxsodium<-hotdog2[which.max(hotdog2$sodium),]
+maxsodium
+```
+
+
