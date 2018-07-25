@@ -1,0 +1,37 @@
+---
+title: "readr$data.table"
+author: "Manojit Sarkar"
+date: "25 July 2018"
+output: html_document
+---
+
+# Introduction
+Till last chapter we have been using R base utils package which come preloaded with R .
+Here we will be using two libraries readr and data.table
+
+#readr
+
+Written by Hadely Wickham fast and easy to use and very consistent.
+so lets dive right in and install the package and loading it 
+
+```{r}
+install.packages("readr")
+library(readr)
+```
+
+Before we used read.csv()  now we will use read_csv() to read csv files -- read_csv returs a tibble (on tibble later-for now tibble is a supercharged version of a data frame; the prinout shows the classes of the coloumns.)
+
+Similarly, instead of read.delim() we use read_tsv() (tsv--tab seperated values)
+
+
+Let see some examples:
+
+We will be using potatoes.csv 
+
+```{r}
+read_csv
+```
+
+
+
+

@@ -1,0 +1,125 @@
+---
+title: "readr$data.table"
+author: "Manojit Sarkar"
+date: "25 July 2018"
+output: html_document
+---
+
+# Introduction
+Till last chapter we have been using R base utils package which come preloaded with R .
+Here we will be using two libraries readr and data.table
+
+#readr
+
+Written by Hadely Wickham fast and easy to use and very consistent.
+so lets dive right in and install the package and loading it 
+
+```{r}
+#install.packages("readr")
+library(readr)
+```
+
+Before we used read.csv()  now we will use read_csv() to read csv files -- read_csv returs a tibble (on tibble later-for now tibble is a supercharged version of a data frame; the prinout shows the classes of the coloumns.)
+
+Similarly, instead of read.delim() we use read_tsv() (tsv--tab seperated values)
+
+
+Let see some examples:
+
+We will be using potatoes.csv 
+
+```{r}
+potatoes<-read_csv("C:/Users/gordon/Desktop/Data Camp/Datasets/potatoes.csv")
+dim(potatoes)
+```
+
+Lets now see first 10 rows of potatoes
+
+```{r}
+head(potatoes,10)
+```
+
+Next lets read a .txt file seperated by tabs.
+we will use read_tsv().
+It doesn't have any header so we can add one to it.
+
+```{r}
+coloum_names <- c("area1", "temp1", "size1", "storage1", "method1","texture1", "flavor1", "moistness1")
+potatoes1<-read_tsv("C:/Users/gordon/Desktop/Data Camp/Datasets/potatoes.txt",col_names = coloum_names)
+head(potatoes1,10)
+```
+
+Now we will be using read_delim() and use delim argument which is similar to sep argument in read.table() 
+
+we will use our potatoes.txt which is seperated by "\t" even we can use "" as the seperator
+
+
+```{r}
+coloum_names <- c("area1", "temp1", "size1", "storage1", "method1","texture1", "flavor1", "moistness1")
+potatoes2<-read_delim("C:/Users/gordon/Desktop/Data Camp/Datasets/potatoes.txt",delim="\t",col_names = coloum_names)
+head(potatoes2,10)
+```
+
+cool!!! lets now explore two more functions 
+
+Through skip and n_max you can control which part of your flat file you're actually importing into R.
+
+skip specifies the number of lines you're ignoring in the flat file before actually starting to import data.
+n_max specifies the number of lines you're actually importing.
+
+Say for example you have a CSV file with 20 lines, and set skip = 2 and n_max = 3, you're only reading in lines 3, 4 and 5 of the file.
+
+Watch out: Once you skip some lines, you also skip the first line that can contain column names!
+
+lets see this in action with an example
+
+```{r}
+coloum_names <- c("area1", "temp1", "size1", "storage1", "method1","texture1", "flavor1", "moistness1")
+potatoes_fragment <- read_tsv("C:/Users/gordon/Desktop/Data Camp/Datasets/potatoes.txt", skip = 6, n_max = 5, col_names = coloum_names)
+potatoes_fragment
+```
+
+As we can see above we hae skipped 6 rows nd then printed 5 rows..
+
+
+We will now see how to use the col_type argument to change/update the class of coloumns
+
+lets do a crazy thing let us change all the classes to character type .
+
+```{r}
+coloum_names <- c("area1", "temp1", "size1", "storage1", "method1","texture1", "flavor1", "moistness1")
+potatoes_char <- read_tsv("C:/Users/gordon/Desktop/Data Camp/Datasets/potatoes.txt", col_types = "cccccccc",col_names = coloum_names)
+str(potatoes_char)
+```
+
+ c-character, d-double, i-integer and l-logical _ skips the column as a whole.
+ 
+ 
+ Now lets see other ways of specifying col_types---it can be done using collectors...collectors functions can be passed in a list() 
+
+For this example we will use two collector functions:
+
+col_integer(): the column should be interpreted as an integer.
+col_factor(levels, ordered = FALSE): the column should be interpreted as a factor with levels.
+
+
+We will be using our hd_nh.txt for this example : first we will import it normally do a summary on it then will use the col_class function using list()
+so lets start
+
+```{r}
+hotdogs<-read_tsv("C:/Users/gordon/Desktop/Data Camp/Datasets/hd_nh.txt")
+summary(hotdogs)
+str(hotdogs)
+```
+
+now lets use col_types with list(collectors).
+
+```{r}
+fac <- col_factor(levels = c("Beef", "Meat", "Poultry"))
+int <- col_integer()
+hotdogs_factor<-read_tsv("C:/Users/gordon/Desktop/Data Camp/Datasets/hd_nh.txt",col_types = list(fac,int,int))
+summary(hotdogs_factor)
+str(hotdogs_factor)
+```
+
+Cool!!
